@@ -26,4 +26,5 @@ jobs:
       - name: Ejecutar Evaluation Harness
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python evaluate.py
+        run: python -u evaluate.py
+        timeout-minutes: 20
