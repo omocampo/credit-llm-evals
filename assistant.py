@@ -82,7 +82,7 @@ def generate_assistant_response(user_prompt: str) -> AssistantResult:
     if not api_key:
         raise ValueError("La variable de entorno GEMINI_API_KEY no está configurada.")
 
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(api_key=api_key,http_options=types.HttpOptions(timeout=60_000), )
     models_to_try = [PRIMARY_MODEL] + FALLBACK_MODELS
     last_error = None
 

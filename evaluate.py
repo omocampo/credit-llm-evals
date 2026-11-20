@@ -82,7 +82,8 @@ def run_evaluation_harness():
     if not api_key:
         raise ValueError("Configura la variable de entorno GEMINI_API_KEY antes de ejecutar.")
 
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(api_key=api_key,
+                          http_options=types.HttpOptions(timeout=60_000), )
 
     with open("golden_dataset.json", "r", encoding="utf-8") as f:
         dataset = json.load(f)
