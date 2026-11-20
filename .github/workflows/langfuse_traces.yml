@@ -30,6 +30,5 @@ jobs:
           LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
           LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
           LANGFUSE_BASE_URL: ${{ secrets.LANGFUSE_BASE_URL }}
-        run: |
-          python -u run_with_langfuse.py
-          timeout-minutes: 20
+        run: python -u run_with_langfuse.py
+        timeout-minutes: 20
