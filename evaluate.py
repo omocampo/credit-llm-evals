@@ -1,3 +1,4 @@
+import sys
 import json
 import os
 import statistics
@@ -8,7 +9,7 @@ from google import genai
 from google.genai import types
 from google.genai.errors import ServerError, ClientError
 from sklearn.metrics import precision_score, recall_score, classification_report
-from assistant import generate_assistant_response, PRIMARY_MODEL, FALLBACK_MODELS
+from assistant import generate_assistant_response, PRIMARY_MODEL, FALLBACK_MODELS, PROMPT_VERSION
 
 
 class JudgeEvaluation(BaseModel):
@@ -212,7 +213,16 @@ def run_evaluation_harness():
             zero_division=0,
         )
     )
-
+    # --- CI/CD QUALITY GATE ---
+    MIN_THRESHOLD = 0.95
+    print("\n" + "=" * 75)
+    print(f"CI/CD QUALITY GATE | Prompt Version: {PROMPT_VERSION} | Umbral Mínimo: {MIN_THRESHOLD:.2f}")
+    if precision < MIN_THRESHOLD or recall < MIN_THRESHOLD:
+        print(f"❌ FALLO DE REGRESIÓN: Precision ({precision:.2f}) o Recall ({recall:.2f}) debajo del umbral.")
+        sys.exit(1)
+    else:
+        print(f"✅ APROBADO: Precision ({precision:.2f}) y Recall ({recall:.2f}) cumplen estándares de producción.")
+    print("=" * 75)
 
 if __name__ == "__main__":
     run_evaluation_harness()

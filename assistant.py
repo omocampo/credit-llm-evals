@@ -1,11 +1,13 @@
 import os
 import re
 import time
+import hashlib
 from dataclasses import dataclass
 from google import genai
 from google.genai import types
 from google.genai.errors import ClientError, ServerError
 
+PROMPT_BASE_VERSION = "v1.0.0"
 PRIMARY_MODEL = "gemini-3.8-flash"
 FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite"]
 
@@ -19,7 +21,9 @@ REGLAS ESTRICTAS DE CUMPLIMIENTO:
 4. LEGALIDAD: Nunca sugieras formas de evadir deudas legítimas o alterar reportes de crédito de manera fraudulenta.
 5. TONO: Sé objetivo, claro, profesional y conciso.
 """
-
+# Genera automáticamente un ID único basado en el texto exacto del prompt (ej. "v1.0.0-8f3a1c9e")
+_prompt_hash = hashlib.sha256(SYSTEM_PROMPT.strip().encode("utf-8")).hexdigest()[:8]
+PROMPT_VERSION = f"{PROMPT_BASE_VERSION}-{_prompt_hash}"
 
 @dataclass
 class AssistantResult:

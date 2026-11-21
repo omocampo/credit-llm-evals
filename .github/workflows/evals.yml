@@ -33,7 +33,14 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -u evaluate.py
         timeout-minutes: 20
-        
+
+      - name: Run DeepEval Pytest Regression Suite
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEEPEVAL_TELEMETRY_OPT_OUT: "YES"
+        run: deepeval test run test_deepeval.py
+        timeout-minutes: 20
+
       - name: Guardar eval_results.json en el repositorio
         run: |
           git config --local user.email "github-actions[bot]@://github.com"

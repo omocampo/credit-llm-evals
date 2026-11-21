@@ -3,7 +3,7 @@ import os
 import time
 from google import genai
 from langfuse import get_client, observe, propagate_attributes
-from assistant import input_guardrails, generate_assistant_response
+from assistant import input_guardrails, generate_assistant_response, PROMPT_VERSION
 from evaluate import evaluate_response_with_judge
 
 langfuse = get_client()
@@ -32,7 +32,8 @@ def run_traced_case(case: dict, gemini_client: genai.Client):
     with propagate_attributes(
         trace_name=f"Eval-{case['id']}",
         user_id="qa-harness-runner",
-        tags=[case["category"], "fcra-ecoa", "cloud-lab"],
+        tags=[case["category"], "fcra-ecoa", PROMPT_VERSION, "cloud-lab"],
+        metadata={"prompt_version": PROMPT_VERSION},
     ):
         langfuse.update_current_span(input={"prompt": case["prompt"], "category": case["category"]})
 
