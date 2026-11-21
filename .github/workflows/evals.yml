@@ -38,7 +38,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           DEEPEVAL_TELEMETRY_OPT_OUT: "YES"
-        run: python -m deepeval test run test_deepeval.py
+        run: python -m pytest test_deepeval.py -v
         timeout-minutes: 20
 
       - name: Guardar eval_results.json en el repositorio
