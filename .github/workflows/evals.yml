@@ -25,8 +25,8 @@ jobs:
 
       - name: Instalar dependencias
         run: |
-          pip install --upgrade pip
-          pip install google-genai scikit-learn pydantic
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Ejecutar Evaluation Harness
         env:
